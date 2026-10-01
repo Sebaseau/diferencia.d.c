@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Diferencia de cuadrados</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{--bg:#F4F5F7;--grid:#E4E8EE;--ink:#1D2939;--muted:#556277;--card:#fff;--line:#CFD6E0;--red:#8C2F3D;--blue:#12505F;--green:#3B7554;--hl:#EFE5CF;--bgsoft:#E9EDF3;--gold:#A8864F;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1620;--grid:#172230;--ink:#E7ECF3;--muted:#9FAEC2;--card:#15202C;--line:#26364A;--red:#E58C99;--blue:#6DBBCB;--green:#7FCB9C;--hl:#3A3122;--bgsoft:#1A2736;--gold:#D4B67D}}
+:root[data-theme="dark"]{--bg:#0E1620;--grid:#172230;--ink:#E7ECF3;--muted:#9FAEC2;--card:#15202C;--line:#26364A;--red:#E58C99;--blue:#6DBBCB;--green:#7FCB9C;--hl:#3A3122;--bgsoft:#1A2736;--gold:#D4B67D}
+.blk{display:inline-block;background:var(--bgsoft);color:var(--blue);border:1px solid var(--line);border-radius:6px;padding:2px 10px;font:700 .85rem "Atkinson Hyperlegible",sans-serif;margin:0 0 12px}
+*{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);scroll-behavior:smooth}
+body{margin:0;background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font:400 18px/1.65 "Atkinson Hyperlegible",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.15;margin:0 0 .5em}
+h1{font-size:clamp(2.4rem,7vw,4.4rem);font-weight:800}
+h2{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700}
+h3{font-size:1.2rem}
+p{margin:0 0 1em;max-width:68ch}
+a{color:var(--blue)}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--card);border-bottom:2px solid var(--line)}
+.bar{height:5px;background:var(--bgsoft)}.bar i{display:block;height:100%;width:0;background:var(--gold)}
+.hd{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:8px 20px;max-width:1100px;margin:auto}
+.logo{font:800 1.05rem "Bricolage Grotesque",sans-serif;color:var(--ink);text-decoration:none}
+.crumbs{font-size:.88rem;color:var(--muted);flex:1}
+.hd input{font:inherit;font-size:.9rem;padding:6px 10px;border:2px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:150px}
+button,.btn{font:700 1rem "Atkinson Hyperlegible",sans-serif;cursor:pointer;border:2px solid var(--ink);background:var(--card);color:var(--ink);border-radius:10px;padding:8px 16px;text-decoration:none;display:inline-block}
+button:hover,.btn:hover{background:var(--hl)}
+.cta{background:var(--ink);color:var(--bg)}.cta:hover{background:var(--red);color:#fff;border-color:var(--red)}
+main{max-width:1100px;margin:auto;padding:0 20px}
+section{padding:44px 0}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;padding-top:50px}
+@media(max-width:800px){.hero{grid-template-columns:1fr}}
+.sub{font-size:1.25rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px;padding:0;list-style:none}
+.chips li{background:var(--card);border:2px solid var(--line);border-radius:999px;padding:3px 14px;font-size:.95rem}
+.note{transform:rotate(-2deg);background:var(--card);padding:10px 10px 14px;border:2px solid var(--line);box-shadow:5px 6px 0 var(--line)}
+.note img{width:100%;display:block;border-radius:2px}
+.hand{font:700 1rem "Bricolage Grotesque",sans-serif;color:var(--muted)}
+.card{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:22px;margin-bottom:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.formula{font:700 clamp(1.5rem,5vw,2.4rem) "Bricolage Grotesque",sans-serif;text-align:center;padding:18px;background:var(--hl);border-radius:12px;margin:14px 0;color:var(--ink)}
+[data-theme="dark"] .formula{color:#fff}
+.m{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;white-space:nowrap}
+.r{color:var(--red)}.b{color:var(--blue)}.g{color:var(--green)}
+ol.steps{padding-left:1.3em;margin:0 0 1em}ol.steps li{margin-bottom:6px}
+table{border-collapse:collapse;width:100%;font-size:.95rem}td,th{border:1px solid var(--line);padding:6px 8px;text-align:center}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:12px 0}
+.flow div{flex:1 1 150px;background:var(--bgsoft);border-left:5px solid var(--blue);padding:8px 12px;border-radius:8px;font-size:.95rem}
+dl{margin:0}dt{font-weight:700;float:left;clear:left;min-width:110px}dd{margin:0 0 6px 120px}
+svg{width:100%;height:auto;display:block}svg text{fill:var(--ink);font:700 15px "Bricolage Grotesque",sans-serif}
+.ctrl{display:flex;flex-wrap:wrap;gap:14px 28px;margin-bottom:14px}.ctrl label{display:block;font-weight:700}.ctrl input[type=range]{width:210px;accent-color:var(--red)}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.out{background:var(--bgsoft);border-radius:12px;padding:16px;min-height:170px}
+.out p{margin:0 0 6px}
+.res{display:inline-block;background:var(--hl);border:2px solid var(--ink);border-radius:10px;padding:6px 14px;font-weight:700;margin-top:6px}
+details{background:var(--card);border:2px solid var(--line);border-radius:12px;margin-bottom:10px}
+summary{cursor:pointer;padding:12px 16px;font-weight:700;list-style-position:inside}
+details .in{padding:0 18px 16px}
+h3.lvl{margin:26px 0 10px}
+.warn{background:var(--card);border:2px solid var(--red);border-left-width:10px;border-radius:10px;padding:12px 16px;margin-bottom:12px}
+.warn b.t{color:var(--red)}
+.ok{color:var(--green);font-weight:700}.no{color:var(--red);font-weight:700}
+input[type=text]{font:inherit;padding:8px 12px;border:2px solid var(--ink);border-radius:10px;background:var(--card);color:var(--ink);width:min(100%,320px)}
+.q{margin-bottom:18px}.q button{margin:4px 6px 4px 0}
+.q button.right{background:var(--green);color:#fff;border-color:var(--green)}.q button.wrong{background:var(--red);color:#fff;border-color:var(--red)}
+footer{background:var(--card);border-top:2px solid var(--line);padding:34px 20px}
+footer .w{max-width:1100px;margin:auto}
+.nav{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin:18px 0}
+.credit{font-size:.85rem;color:var(--muted);margin:18px 0 0}
+</style>
+</head>
+<body>
+<header>
+<div class="bar" aria-hidden="true"><i id="prog"></i></div>
+<div class="hd">
+<span class="blk" style="margin:0">Bloque 1 · Header y barra de progreso</span>
+<nav class="crumbs" aria-label="Ruta">Matemáticas › Álgebra › Diferencia de cuadrados</nav>
+<input id="q" type="search" placeholder="Buscar concepto" aria-label="Buscar concepto">
+<button id="tema" aria-label="Cambiar entre modo claro y oscuro">Claro / Oscuro</button>
+</div>
+</header>
+
+<main id="inicio">
+<!-- BLOQUE 2 -->
+<section class="hero">
+<div>
+<span class="blk">Bloque 2 · Presentación del tema</span>
+<h1>Diferencia de cuadrados</h1>
+<p class="sub">Aprende a convertir una resta de dos cuadrados en dos paréntesis, con un truco de 4 pasos que puedes hacer de memoria.</p>
+<ul class="chips"><li>20 min de estudio</li><li>Nivel: principiante a intermedio</li><li>Antes: potencias</li><li>Antes: raíz cuadrada</li><li>Antes: factor común</li></ul>
+<a class="btn cta" href="#atomo">Comenzar lección</a> <a class="btn" href="#juego">Ir al simulador</a>
+</div>
+<div class="card"><div class="formula">a² − b² = (a + b)(a − b)</div><p style="margin:0;text-align:center">Ejemplo: <span class="m">9x² − 16 = (3x + 4)(3x − 4)</span></p></div>
+</section>
+
+<!-- BLOQUE 3 -->
+<section id="atomo">
+<span class="blk">Bloque 3 · Fundamentación atómica</span>
+<h2>Primero: ¿qué es un cuadrado perfecto?</h2>
+<div class="grid2">
+<div class="card">
+<p>Un número es <b>cuadrado perfecto</b> cuando sale de multiplicar otro número por sí mismo. La operación contraria es la <b>raíz cuadrada</b>.</p>
+<div class="formula" style="font-size:1.6rem">7 · 7 = 7² = 49 &nbsp;→&nbsp; √49 = 7</div>
+<h3>Cómo sacar la raíz, en 4 pasos</h3>
+<ol class="steps"><li>Mira el número: ¿es 1, 4, 9, 16, 25…?</li><li>Busca qué número multiplicado por sí mismo lo forma.</li><li>En las letras, divide el exponente entre 2: x⁴ → x².</li><li>Escribe la raíz y comprueba elevando al cuadrado.</li></ol>
+<p><b>Ejemplo flash:</b> √(9x²) = <span class="m">3x</span>, porque (3x)·(3x) = 9x².</p>
+</div>
+<div class="card"><h3>Tabla de cuadrados</h3>
+<table aria-label="Tabla de cuadrados perfectos"><tr><th>n</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td></tr><tr><th>n²</th><td>1</td><td>4</td><td>9</td><td>16</td><td>25</td><td>36</td></tr><tr><th>n</th><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td></tr><tr><th>n²</th><td>49</td><td>64</td><td>81</td><td>100</td><td>121</td><td>144</td></tr></table>
+<p class="hand" style="margin-top:12px">Memorízala: te ahorra mucho tiempo.</p></div>
+</div>
+</section>
+
+<!-- BLOQUE 4 -->
+<section id="teoria">
+<span class="blk">Bloque 4 · Marco teórico y modelo conceptual</span>
+<h2>La regla</h2>
+<div class="card">
+<p>Cuando restas dos cuadrados perfectos, el resultado siempre se puede escribir como un producto de dos paréntesis: uno con <b>suma</b> y otro con <b>resta</b>.</p>
+<div class="formula">a² − b² = (a + b)(a − b)</div>
+<div><div><h3>Glosario rápido</h3><dl><dt>a²</dt><dd>el primer cuadrado (ej. 9x²)</dd><dt>b²</dt><dd>el segundo cuadrado (ej. 16)</dd><dt>a</dt><dd>raíz del primero (ej. 3x)</dd><dt>b</dt><dd>raíz del segundo (ej. 4)</dd><dt>(a + b)</dt><dd>paréntesis de la suma</dd><dt>(a − b)</dt><dd>paréntesis de la resta</dd><dt>conjugados</dt><dd>dos binomios iguales, uno con + y otro con −</dd></dl></div>
+</div>
+</div>
+<div class="card">
+<h3>Lo que explican los libros de álgebra</h3>
+<p><b>Factorizar es multiplicar al revés.</b> Los libros presentan la diferencia de cuadrados como un producto notable (la <i>suma por diferencia</i>, o producto de binomios conjugados) leído de derecha a izquierda.</p>
+<p>Al multiplicar: <span class="m">(a + b)(a − b) = a² − <span class="r">ab</span> + <span class="r">ab</span> − b² = a² − b²</span>. Los términos del medio se cancelan, y por eso solo quedan los dos cuadrados.</p>
+<p><b>La suma no se factoriza.</b> Un binomio como x² + y² no tiene factores con números reales, salvo que antes haya un factor común.</p>
+<p><b>Es un caso de factorización.</b> En los textos aparece junto a los otros casos (factor común, agrupación, trinomios) como el caso de la <i>diferencia de cuadrados perfectos</i>.</p>
+</div>
+<div class="card">
+<h3>¿Por qué funciona? Míralo con áreas</h3>
+<svg viewBox="0 0 560 215" role="img" aria-label="Un cuadrado grande de lado a al que se le quita un cuadrado pequeño de lado b. Las piezas restantes se reacomodan en un rectángulo de base a más b y altura a menos b.">
+<rect x="20" y="30" width="90" height="60" fill="var(--green)" opacity=".92"/>
+<rect x="110" y="30" width="60" height="60" fill="none" stroke="var(--red)" stroke-width="3" stroke-dasharray="6 4"/>
+<rect x="20" y="90" width="150" height="90" fill="var(--blue)" opacity=".92"/>
+<text x="140" y="66" text-anchor="middle" fill="var(--red)" style="fill:var(--red)">b²</text>
+<text x="95" y="20" text-anchor="middle">a</text>
+<text x="76" y="140" text-anchor="middle" style="fill:var(--bg)">a · (a−b)</text>
+<text x="65" y="66" text-anchor="middle" style="fill:var(--bg)" font-size="13">(a−b) · b</text>
+<text x="205" y="110" text-anchor="middle" font-size="26">→</text>
+<rect x="240" y="90" width="150" height="90" fill="var(--blue)" opacity=".92"/>
+<rect x="390" y="90" width="60" height="90" fill="var(--green)" opacity=".92"/>
+<text x="345" y="80" text-anchor="middle">a + b</text>
+<text x="475" y="140">a − b</text>
+<text x="20" y="205" style="font-weight:400;font-size:13px">Cuadrado a² menos b² (quitamos la esquina)</text>
+<text x="240" y="205" style="font-weight:400;font-size:13px">Mismas piezas: rectángulo (a+b) por (a−b)</text>
+</svg>
+<p>Las piezas son las mismas, solo cambian de lugar. Por eso el área no cambia: <b>a² − b² = (a+b)(a−b)</b>.</p>
+</div>
+<div class="card">
+<h3>Receta con colores</h3>
+<div class="flow"><div><b>1.</b> ¿Hay una resta con dos términos?</div><div><b>2.</b> ¿Los dos son cuadrados perfectos?</div><div><b>3.</b> Saca la <span class="b">raíz</span> de cada uno.</div><div><b>4.</b> Escribe <span class="g">(raíz₁ + raíz₂)</span> <span class="r">(raíz₁ − raíz₂)</span></div></div>
+</div>
+</section>
+
+<!-- BLOQUE 5 -->
+<section id="juego">
+<span class="blk">Bloque 5 · Demostración e interacción</span>
+<h2>Pruébalo tú</h2>
+<div class="card">
+<p>Mueve los controles y mira cómo se resuelve paso a paso.</p>
+<div class="ctrl">
+<div><label for="k">Número junto a x: <span id="kv"></span></label><input type="range" id="k" min="1" max="9" value="3"></div>
+<div><label for="mm">Número que se resta: <span id="mv"></span></label><input type="range" id="mm" min="1" max="12" value="4"></div>
+</div>
+<div class="presets"><button data-k="1" data-m="3">x² − 9</button><button data-k="2" data-m="5">4x² − 25</button><button data-k="3" data-m="4">9x² − 16 (cuaderno)</button><button data-k="5" data-m="1">25x² − 1</button></div>
+<div class="out" id="sim" aria-live="polite"></div>
+</div>
+</section>
+
+<!-- BLOQUE 6 -->
+<section id="ejercicios">
+<span class="blk">Bloque 6 · Banco de ejercicios resueltos</span>
+<h2>Ejercicios resueltos</h2>
+<h3 class="lvl">Nivel 0 · Base</h3>
+<details><summary>Saca la raíz de 16x²</summary><div class="in"><p>√16 = 4 y √x² = x.</p><span class="res">√(16x²) = 4x</span></div></details>
+<details><summary>¿Es 50 un cuadrado perfecto?</summary><div class="in"><p>7·7 = 49 y 8·8 = 64. El 50 queda en medio.</p><span class="res">No lo es</span></div></details>
+<h3 class="lvl">Nivel 1 · Directo</h3>
+<details><summary>Factoriza x² − 49</summary><div class="in"><p>1) x² = (x)² → raíz x</p><p>2) 49 = (7)² → raíz 7</p><p>3) Suma y resta:</p><span class="res">x² − 49 = (x + 7)(x − 7)</span></div></details>
+<details><summary>Factoriza 81 − y²</summary><div class="in"><p>Raíces: 9 y y.</p><span class="res">81 − y² = (9 + y)(9 − y)</span></div></details>
+<h3 class="lvl">Nivel 2 · Combinado</h3>
+<details><summary>Factoriza 9x² − 16 (el de tu cuaderno)</summary><div class="in"><p>1) 9x² = (3x)² → raíz 3x</p><p>2) 16 = (4)² → raíz 4</p><p>3) Escribe los dos paréntesis.</p><span class="res">9x² − 16 = (3x + 4)(3x − 4)</span><p style="margin-top:8px">Comprueba: 3x·3x − 3x·4 + 4·3x − 16 = 9x² − 16 ✔</p></div></details>
+<details><summary>Factoriza 4x² − 25y²</summary><div class="in"><p>Raíces: 2x y 5y.</p><span class="res">4x² − 25y² = (2x + 5y)(2x − 5y)</span></div></details>
+<details><summary>Con fracciones: x²/9 − 1/4</summary><div class="in"><p>Raíces: x/3 y 1/2, porque (x/3)² = x²/9 y (1/2)² = 1/4.</p><span class="res">x²/9 − 1/4 = (x/3 + 1/2)(x/3 − 1/2)</span></div></details>
+<details><summary>Con exponentes: x⁶ − y⁴</summary><div class="in"><p>Para la raíz, divide cada exponente entre 2: √x⁶ = x³ y √y⁴ = y².</p><span class="res">x⁶ − y⁴ = (x³ + y²)(x³ − y²)</span></div></details>
+<h3 class="lvl">Nivel 3 · Desafío</h3>
+<details><summary>Factoriza 2x² − 50</summary><div class="in"><p>1) Saca el factor común 2: 2(x² − 25)</p><p>2) Dentro, diferencia de cuadrados: x² − 25 = (x+5)(x−5)</p><span class="res">2x² − 50 = 2(x + 5)(x − 5)</span></div></details>
+<details><summary>Factoriza x⁴ − 16</summary><div class="in"><p>1) x⁴ = (x²)² y 16 = (4)² → (x² + 4)(x² − 4)</p><p>2) x² − 4 todavía es diferencia de cuadrados → (x + 2)(x − 2)</p><span class="res">x⁴ − 16 = (x² + 4)(x + 2)(x − 2)</span></div></details>
+<h3 class="lvl">Aplicaciones y binomio compuesto</h3>
+<details><summary>Cálculo mental: 51 × 49</summary><div class="in"><p>Escribe 51 = 50 + 1 y 49 = 50 − 1. Es (a + b)(a − b) con a = 50 y b = 1.</p><p>Entonces: 50² − 1² = 2500 − 1.</p><span class="res">51 × 49 = 2499</span></div></details>
+<details><summary>Cuando a es un paréntesis: (x + y)² − 9</summary><div class="in"><p>Aquí a = (x + y) y b = 3, porque 9 = 3².</p><span class="res">(x + y)² − 9 = (x + y + 3)(x + y − 3)</span></div></details>
+</section>
+
+<!-- BLOQUE 7 -->
+<section id="practica">
+<span class="blk">Bloque 7 · Práctica autónoma, errores comunes y evaluación</span>
+<h2>Errores comunes</h2>
+<div class="warn"><b class="t">Con suma no funciona.</b> x² + 9 no se puede factorizar así. La regla pide una resta.</div>
+<div class="warn"><b class="t">No olvides la raíz del número.</b> En 9x² la raíz es 3x, no 9x.</div>
+<div class="warn"><b class="t">Dos paréntesis distintos.</b> (x − 3)² no es lo mismo que (x + 3)(x − 3). Uno suma y el otro resta.</div>
+<div class="warn"><b class="t">Mira si hay factor común primero.</b> En 2x² − 50 saca el 2 antes de empezar.</div>
+
+<h2 style="margin-top:40px">Practica con ejercicios al azar</h2>
+<div class="card">
+<p>Factoriza: <span class="m" id="pe" style="font-size:1.5rem"></span></p>
+<p><label for="pa">Tu respuesta (ejemplo: (x+2)(x-2))</label><br><input type="text" id="pa" autocomplete="off"></p>
+<button id="pc">Comprobar</button> <button id="ph">Pista</button> <button id="pn">Otro ejercicio</button>
+<p id="pf" aria-live="polite" style="margin-top:12px"></p>
+<p>Aciertos: <b id="ps">0</b> de <b id="pt">0</b></p>
+</div>
+
+<h2 style="margin-top:40px">Mini-test</h2>
+<div class="card" id="test"></div>
+<p id="tr" aria-live="polite" style="font-weight:700"></p>
+</section>
+</main>
+
+<!-- BLOQUE 8 -->
+<footer>
+<div class="w">
+<span class="blk">Bloque 8 · Footer y recursos descargables</span>
+<h2>Recursos</h2>
+<p><button onclick="window.print()">Imprimir esta lección o guardarla en PDF</button></p>
+<p>Consejo: en el cuadro de impresión elige “Guardar como PDF”.</p>
+<h3>Fuentes consultadas</h3>
+<p>Contenido adaptado con explicaciones propias a partir de textos abiertos de álgebra:<br>
+<a href="https://espanol.libretexts.org/Bookshelves/Matematicas/Algebra/Libro%3A_Aritmetica_y_Algebra_(ElHitti_Bonanome_Carley_Tradler_y_Zhou)/01%3A_Cap%C3%ADtulos/1.15%3A_Factorizar_la_Diferencia_de_Dos_Cuadrados" target="_blank" rel="noopener">LibreTexts Español: Aritmética y Álgebra, “Factorizar la diferencia de dos cuadrados”</a><br>
+<a href="https://espanol.libretexts.org/Bookshelves/Matematicas/Algebra/Algebra_Intermedia_para_Ciencia_Tecnologia_Ingenieria_y_Matematicas_(Diaz)/07%3A_Factorizaci%C3%B3n_de_expresiones_y_resoluci%C3%B3n_por_factorizaci%C3%B3n/7.04%3A_Productos_especiales" target="_blank" rel="noopener">LibreTexts Español: Álgebra intermedia, “Productos especiales”</a><br>
+<a href="https://nicaraguaeduca.mined.gob.ni/wp-content/uploads/2020/06/Guia-No-3_-Autoestudio-Matem-8-grado.pdf" target="_blank" rel="noopener">MINED Nicaragua: Guía de autoestudio de Matemática, 8.º grado</a></p>
+<p>¿Dudas? Anótalas y pregúntalas a tu docente en la próxima clase.</p>
+</div>
+</footer>
+
+<script>
+const $=s=>document.querySelector(s);
+const sq=n=>'<sup>2</sup>';
+// Progreso
+addEventListener('scroll',()=>{const h=document.documentElement;$('#prog').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100||0)+'%'});
+// Tema
+try{const t=localStorage.getItem('tema');if(t)document.documentElement.dataset.theme=t}catch(e){}
+$('#tema').onclick=()=>{const d=document.documentElement;const dark=d.dataset.theme?d.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;d.dataset.theme=dark?'light':'dark';try{localStorage.setItem('tema',d.dataset.theme)}catch(e){}};
+// Buscador
+$('#q').addEventListener('keydown',e=>{if(e.key!=='Enter')return;const v=e.target.value.trim().toLowerCase();if(!v)return;const hit=[...document.querySelectorAll('section')].find(s=>s.textContent.toLowerCase().includes(v));if(hit)hit.scrollIntoView();else e.target.value='',e.target.placeholder='No encontrado'});
+// Simulador
+const coef=k=>k==1?'':k, rt=k=>(k==1?'':k)+'x';
+function sim(){const k=+$('#k').value,m=+$('#mm').value;$('#kv').textContent=k;$('#mv').textContent=m;
+const a=rt(k),t=(k*k==1?'':k*k)+'x²',km=(k*m==1?'':k*m)+'x';
+$('#sim').innerHTML=`<p><b>Expresión:</b> <span class="m">${t} − ${m*m}</span></p>
+<p><b>1.</b> Primer término: ${t} = (<span class="b">${a}</span>)² porque √${k*k==1?'x²':k*k+'x²'} = ${a}</p>
+<p><b>2.</b> Segundo término: ${m*m} = (<span class="b">${m}</span>)² porque √${m*m} = ${m}</p>
+<p><b>3.</b> Hay una resta entre cuadrados perfectos ✔</p>
+<p><b>4.</b> Un paréntesis con suma y otro con resta:</p>
+<span class="res">${t} − ${m*m} = (${a} + ${m})(${a} − ${m})</span>
+<p style="margin-top:10px"><b>Comprueba:</b> ${t} − ${km} + ${km} − ${m*m}. Los términos del medio se cancelan y queda ${t} − ${m*m} ✔</p>`}
+$('#k').oninput=sim;$('#mm').oninput=sim;
+document.querySelectorAll('.presets button').forEach(b=>b.onclick=()=>{$('#k').value=b.dataset.k;$('#mm').value=b.dataset.m;sim()});sim();
+// Práctica
+let cur,ok=0,tot=0,done=false;
+const norm=s=>s.toLowerCase().replace(/[\s−–]/g,c=>c.trim()===''?'':'-').replace(/\^2/g,'²').replace(/\*/g,'');
+function nuevo(){const k=1+Math.floor(Math.random()*6),m=1+Math.floor(Math.random()*9);cur={k,m};done=false;
+$('#pe').innerHTML=`${k*k==1?'':k*k}x² − ${m*m}`;$('#pa').value='';$('#pf').textContent=''}
+$('#pc').onclick=()=>{const v=norm($('#pa').value);if(!v){$('#pf').innerHTML='<span class="no">Escribe tu respuesta primero.</span>';return}
+const a=rt(cur.k),m=cur.m,A=`(${a}+${m})(${a}-${m})`,B=`(${a}-${m})(${a}+${m})`;
+if(!done){tot++;}const good=v===A||v===B;
+if(good&&!done){ok++;done=true}
+$('#ps').textContent=ok;$('#pt').textContent=tot;
+$('#pf').innerHTML=good?'<span class="ok">¡Correcto! Raíces '+a+' y '+m+'.</span>':'<span class="no">Todavía no.</span> Revisa: ¿sacaste bien las dos raíces y usaste un + y un − ?'};
+$('#ph').onclick=()=>{$('#pf').textContent=`Pista: la raíz del primer término es ${rt(cur.k)} y la del segundo es ${cur.m}.`};
+$('#pn').onclick=nuevo;nuevo();
+// Mini-test
+const Q=[['¿Cuál es la raíz de 25x²?',['25x','5x','5x²'],1],['x² − 36 =',['(x+6)(x−6)','(x−6)²','(x+36)(x−1)'],0],['¿Cuál NO se puede factorizar como diferencia de cuadrados?',['x² − 1','4x² − 9','x² + 16'],2],['9x² − 16 =',['(3x+4)(3x−4)','(9x+4)(9x−4)','(3x−4)²'],0]];
+let sc=0,ans=0;
+Q.forEach((q,i)=>{const d=document.createElement('div');d.className='q';d.innerHTML=`<p><b>${i+1}.</b> ${q[0]}</p>`;q[1].forEach((o,j)=>{const b=document.createElement('button');b.textContent=o;b.onclick=()=>{if(d.dataset.done)return;d.dataset.done=1;ans++;if(j===q[2]){b.classList.add('right');sc++}else{b.classList.add('wrong');d.querySelectorAll('button')[q[2]].classList.add('right')}
+if(ans===Q.length)$('#tr').textContent=`Resultado: ${sc} de ${Q.length}. ${sc>=3?'¡Muy bien!':'Repasa la receta y vuelve a intentarlo.'}`};d.appendChild(b)});$('#test').appendChild(d)});
+</script>
+</body>
+</html>
